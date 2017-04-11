@@ -1,30 +1,25 @@
-package net.livecar.NuttyWorks.nuBeton_JobsReborn.Objectives;
+package net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_8.Objectives;
 
-import java.util.logging.Level;
-
-import net.livecar.NuttyWorks.nuBeton_JobsReborn.nuBetonJobsReborn;
+import net.livecar.NuttyWorks.nuBeton_JobsReborn.BetonJobsReborn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
-import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.Job;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class Objective_LevelUpEvent extends Objective implements Listener 
+public class Objective_LeaveJob extends Objective implements Listener 
 {
 	private final String sJobName;
 	
-	public Objective_LevelUpEvent(String packName, String label, String instructions) throws InstructionParseException 
+	public Objective_LeaveJob(String packName, String label, String instructions) throws InstructionParseException 
 	{
         super(packName, label, instructions);
         template = ObjectiveData.class;
@@ -44,9 +39,9 @@ public class Objective_LevelUpEvent extends Objective implements Listener
     }
 	
 	@EventHandler
-    public void onJobsLevelUpEvent(JobsLevelUpEvent event) 
+    public void onJobsLeaveEvent(JobsLeaveEvent event) 
 	{
-		if (event.getJobName().equalsIgnoreCase(this.sJobName))
+		if (event.getJob().getName().equalsIgnoreCase(this.sJobName))
 		{
 			String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
             if (containsPlayer(playerID) && checkConditions(playerID)) {
@@ -57,7 +52,7 @@ public class Objective_LevelUpEvent extends Objective implements Listener
     
     @Override
     public void start() {
-        Bukkit.getPluginManager().registerEvents(this, nuBetonJobsReborn.Instance);
+        Bukkit.getPluginManager().registerEvents(this, BetonJobsReborn.Instance);
     }
 
     @Override

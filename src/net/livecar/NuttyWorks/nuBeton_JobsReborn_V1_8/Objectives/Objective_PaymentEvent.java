@@ -1,20 +1,13 @@
-package net.livecar.NuttyWorks.nuBeton_JobsReborn.Objectives;
+package net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_8.Objectives;
 
-import java.util.logging.Level;
-
-import net.livecar.NuttyWorks.nuBeton_JobsReborn.nuBetonJobsReborn;
+import net.livecar.NuttyWorks.nuBeton_JobsReborn.BetonJobsReborn;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.api.JobsJoinEvent;
-import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
-import com.gamingmesh.jobs.container.Job;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Objective;
@@ -59,7 +52,7 @@ public class Objective_PaymentEvent extends Objective implements Listener
     
     @Override
     public void start() {
-        Bukkit.getPluginManager().registerEvents(this, nuBetonJobsReborn.Instance);
+        Bukkit.getPluginManager().registerEvents(this, BetonJobsReborn.Instance);
     }
 
     @Override

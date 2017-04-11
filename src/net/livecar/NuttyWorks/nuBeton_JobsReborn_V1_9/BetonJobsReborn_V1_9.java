@@ -1,33 +1,25 @@
-package net.livecar.NuttyWorks.nuBeton_JobsReborn;
+package net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_9;
 
 import java.util.logging.Level;
 
-import net.livecar.NuttyWorks.nuBeton_JobsReborn.Conditions.*;
-import net.livecar.NuttyWorks.nuBeton_JobsReborn.Events.*;
-import net.livecar.NuttyWorks.nuBeton_JobsReborn.Objectives.*;
-
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
 
-import com.gamingmesh.jobs.api.JobsJoinEvent;
+import net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_9.Conditions.*;
+import net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_9.Events.*;
+import net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_9.Objectives.*;
 
 import pl.betoncraft.betonquest.BetonQuest;
 
-public class nuBetonJobsReborn extends org.bukkit.plugin.java.JavaPlugin implements org.bukkit.event.Listener 
+public class BetonJobsReborn_V1_9
 {
-	public static nuBetonJobsReborn Instance;
-	
-	public void onEnable() {
-		nuBetonJobsReborn.Instance = this;
-	    
+	public BetonJobsReborn_V1_9() 
+	{
 		//Register conditions with beton
 		BetonQuest.getInstance().registerConditions("nujobs_canlevel", Condition_CanLevel.class);
 		BetonQuest.getInstance().registerConditions("nujobs_hasjob", Condition_HasJob.class);
 		BetonQuest.getInstance().registerConditions("nujobs_jobfull", Condition_JobFull.class);
 		BetonQuest.getInstance().registerConditions("nujobs_joblevel", Condition_JobLevel.class);
+		Bukkit.getServer().getLogger().log(Level.INFO, "Registered Conditions [nujobs_canlevel,nujobs_hasjob,nujobs_jobfull,nujobs_joblevel]");
 	    
 		//register events
 		BetonQuest.getInstance().registerEvents("nujobs_addexp", Event_AddExp.class);
@@ -36,20 +28,13 @@ public class nuBetonJobsReborn extends org.bukkit.plugin.java.JavaPlugin impleme
 		BetonQuest.getInstance().registerEvents("nujobs_joinjob", Event_JoinJob.class);
 		BetonQuest.getInstance().registerEvents("nujobs_leavejob", Event_LeaveJob.class);
 		BetonQuest.getInstance().registerEvents("nujobs_setlevel", Event_SetLevel.class);
+		Bukkit.getServer().getLogger().log(Level.INFO, "Registered Events [nujobs_addexp,nujobs_addlevel,nujobs_dellevel,nujobs_joinjob,nujobs_leavejob,nujobs_setlevel]");
 		
 		//register objectives
 		BetonQuest.getInstance().registerObjectives("nujobs_joinjob", Objective_JoinJob.class);
 		BetonQuest.getInstance().registerObjectives("nujobs_leavejob", Objective_LeaveJob.class);
 		BetonQuest.getInstance().registerObjectives("nujobs_levelup", Objective_LevelUpEvent.class);
 		BetonQuest.getInstance().registerObjectives("nujobs_payment", Objective_PaymentEvent.class);
-	    
-		getLogger().log(java.util.logging.Level.ALL,ChatColor.GREEN + this.getDescription().getName() + " [V "+ this.getDescription().getVersion() + "] initialized");
-		
-		try {
-			MCStatsMetrics metrics = new MCStatsMetrics(this);
-			metrics.start();
-		} catch (Exception e) {
-			// Wheee no stats, oh well.
-		}
+		Bukkit.getServer().getLogger().log(Level.INFO, "Registered Objectives [nujobs_joinjob,nujobs_leavejob,nujobs_levelup,nujobs_payment]");
 	}
 }

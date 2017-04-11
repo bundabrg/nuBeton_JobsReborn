@@ -1,4 +1,4 @@
-package net.livecar.NuttyWorks.nuBeton_JobsReborn.Events;
+package net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_8.Conditions;
 
 import java.util.List;
 
@@ -9,19 +9,18 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class Event_DelLevel extends QuestEvent
+public class Condition_HasJob extends Condition
 {
 	private String sJobName;
-	private Integer nAddLevel;
 	
-    public Event_DelLevel(String packName, String instructions) throws InstructionParseException 
-    {
-        super(packName, instructions);
-        String[] sParts = instructions.split(" ");
-		if (sParts.length < 3) {
+	public Condition_HasJob(String packName, String instruction) throws InstructionParseException
+	{
+		super(packName, instruction);
+		String[] sParts = instructions.split(" ");
+		if (sParts.length < 2) {
 			throw new InstructionParseException("Not enough arguments");
 		}
 		for (Job job : Jobs.getJobs()) 
@@ -29,21 +28,14 @@ public class Event_DelLevel extends QuestEvent
 			if (job.getName().equalsIgnoreCase(sParts[1]))
 			{
 				sJobName = job.getName();
-				try {
-					this.nAddLevel = Integer.parseInt(sParts[2]);
-				} catch (Exception err)
-				{
-					throw new InstructionParseException("NUJobs_DelLevel: Unable to parse the level amount" );					
-				}
 				return;
 			}
 		}
 		throw new InstructionParseException("Jobs Reborn job " + sParts[1] + " does not exist" );
-    }
+	}
 
-    @Override
-    public void run(String playerID) 
-    {
+	public boolean check(String playerID)
+	{
 		Player oPlayer =  PlayerConverter.getPlayer(playerID);
 		
 		List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
@@ -52,10 +44,9 @@ public class Event_DelLevel extends QuestEvent
 			if (oJob.getJob().getName().equalsIgnoreCase(sJobName))
 			{
 				//User has the job, return true
-				oJob.setLevel(oJob.getLevel() - this.nAddLevel);
-				if (oJob.getLevel() < 1)
-					oJob.setLevel(1);
+				return true;
 			}
 		}
-    }
+		return false;
+	}
 }

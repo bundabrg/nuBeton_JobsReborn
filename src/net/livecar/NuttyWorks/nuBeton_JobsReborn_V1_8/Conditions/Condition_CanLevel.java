@@ -1,4 +1,4 @@
-package net.livecar.NuttyWorks.nuBeton_JobsReborn.Events;
+package net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_8.Conditions;
 
 import java.util.List;
 
@@ -9,17 +9,17 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class Event_LeaveJob extends QuestEvent
+public class Condition_CanLevel extends Condition
 {
 	private String sJobName;
 	
-    public Event_LeaveJob(String packName, String instructions) throws InstructionParseException 
-    {
-        super(packName, instructions);
-        String[] sParts = instructions.split(" ");
+	public Condition_CanLevel(String packName, String instruction) throws InstructionParseException
+	{
+		super(packName, instruction);
+		String[] sParts = instructions.split(" ");
 		if (sParts.length < 2) {
 			throw new InstructionParseException("Not enough arguments");
 		}
@@ -32,19 +32,22 @@ public class Event_LeaveJob extends QuestEvent
 			}
 		}
 		throw new InstructionParseException("Jobs Reborn job " + sParts[1] + " does not exist" );
-    }
+	}
 
-    @Override
-    public void run(String playerID) 
-    {
+	public boolean check(String playerID)
+	{
 		Player oPlayer =  PlayerConverter.getPlayer(playerID);
-		for (Job job : Jobs.getJobs()) 
+		
+		List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
+		for (JobProgression oJob : oJobs) 
 		{
-			if (job.getName().equalsIgnoreCase(sJobName))
+			if (oJob.getJob().getName().equalsIgnoreCase(sJobName))
 			{
-				Jobs.getPlayerManager().getJobsPlayer(oPlayer).leaveJob(job);
-				return;
+				//User has the job, return true
+				if (oJob.canLevelUp())
+					return true;
 			}
 		}
-    }
+		return false;
+	}
 }

@@ -1,16 +1,10 @@
-package net.livecar.NuttyWorks.nuBeton_JobsReborn.Conditions;
-
-import java.util.List;
-
-import org.bukkit.entity.Player;
+package net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_8.Conditions;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobProgression;
 
 import pl.betoncraft.betonquest.InstructionParseException;
 import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 public class Condition_JobFull extends Condition
 {

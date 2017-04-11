@@ -1,4 +1,4 @@
-package net.livecar.NuttyWorks.nuBeton_JobsReborn.Events;
+package net.livecar.NuttyWorks.nuBeton_JobsReborn_V1_8.Conditions;
 
 import java.util.List;
 
@@ -9,19 +9,20 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 
 import pl.betoncraft.betonquest.InstructionParseException;
-import pl.betoncraft.betonquest.api.QuestEvent;
+import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-public class Event_AddLevel extends QuestEvent
+public class Condition_JobLevel extends Condition
 {
 	private String sJobName;
-	private Integer nAddLevel;
+	private int nMinLevel;
+	private int nMaxLevel;
 	
-    public Event_AddLevel(String packName, String instructions) throws InstructionParseException 
-    {
-        super(packName, instructions);
-        String[] sParts = instructions.split(" ");
-		if (sParts.length < 3) {
+	public Condition_JobLevel(String packName, String instruction) throws InstructionParseException
+	{
+		super(packName, instruction);
+		String[] sParts = instructions.split(" ");
+		if (sParts.length < 4) {
 			throw new InstructionParseException("Not enough arguments");
 		}
 		for (Job job : Jobs.getJobs()) 
@@ -30,20 +31,20 @@ public class Event_AddLevel extends QuestEvent
 			{
 				sJobName = job.getName();
 				try {
-					this.nAddLevel = Integer.parseInt(sParts[2]);
+					this.nMinLevel = Integer.parseInt(sParts[2]);
+					this.nMaxLevel = Integer.parseInt(sParts[3]);
 				} catch (Exception err)
 				{
-					throw new InstructionParseException("NUJobs_AddLevel: Unable to parse the level amount" );					
+					throw new InstructionParseException("NUJobs_Joblevel: Unable to parse the min or max level" );					
 				}
 				return;
 			}
 		}
 		throw new InstructionParseException("Jobs Reborn job " + sParts[1] + " does not exist" );
-    }
+	}
 
-    @Override
-    public void run(String playerID) 
-    {
+	public boolean check(String playerID)
+	{
 		Player oPlayer =  PlayerConverter.getPlayer(playerID);
 		
 		List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
@@ -52,10 +53,10 @@ public class Event_AddLevel extends QuestEvent
 			if (oJob.getJob().getName().equalsIgnoreCase(sJobName))
 			{
 				//User has the job, return true
-				oJob.setLevel(this.nAddLevel + oJob.getLevel());
-				if (oJob.getLevel() > oJob.getJob().getMaxLevel())
-					oJob.getJob().getMaxLevel();
+				if (oJob.getLevel() >= nMinLevel && oJob.getLevel() <= nMaxLevel)
+					return true;
 			}
 		}
-    }
+		return false;
+	}
 }
