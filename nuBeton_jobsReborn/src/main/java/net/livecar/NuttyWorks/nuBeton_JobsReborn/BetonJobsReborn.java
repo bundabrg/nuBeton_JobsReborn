@@ -10,15 +10,15 @@ public class BetonJobsReborn extends org.bukkit.plugin.java.JavaPlugin implement
 {
 	public static BetonJobsReborn Instance;
 	private BetonQuestPlugin bqPlugin;
-	
+
 	@SuppressWarnings("unused")
 	public void onEnable() 
 	{
-		//Get version 1.8.x or 1.9x
+		//Get version 1.8.x or later
 		if (getServer().getPluginManager().getPlugin("BetonQuest").getDescription().getVersion().startsWith("1.8"))
 		{
 			bqPlugin = new BetonJobsReborn_V1_8(this);
-		} else if (getServer().getPluginManager().getPlugin("BetonQuest").getDescription().getVersion().startsWith("1.9") || getServer().getPluginManager().getPlugin("BetonQuest").getDescription().getVersion().startsWith("1.10"))
+		} else
 		{
 			bqPlugin = new BetonJobsReborn_V1_9(this);
 		}
